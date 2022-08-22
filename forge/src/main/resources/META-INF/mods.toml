@@ -1,33 +1,32 @@
 modLoader = "javafml"
 loaderVersion = "[${loaderVersion},)"
-#issueTrackerURL = ""
-license = "Insert License Here"
+issueTrackerURL = "https://github.com/MoreMcmeta/json-reader-plugin/issues"
+license = "LGPL-3.0"
 
 [[mods]]
-modId = "myplugin"
+modId = "moremcmeta_json_reader_plugin"
 version = "${modVersion}"
-displayName = "Example Mod"
-authors = "AUTHOR_NAME"
+displayName = "MoreMcmeta JSON Reader Plugin"
+authors = "soir20"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+Default plugin for MoreMcmeta that reads JSON (.moremcmeta) metadata files.
 '''
-#logoFile = ""
 
-[[dependencies.myplugin]]
+[[dependencies.moremcmeta_json_reader_plugin]]
 modId = "moremcmeta"
 mandatory = true
 versionRange = "[${minMoreMcmetaVersion},)"
 ordering = "NONE"
 side = "CLIENT"
 
-[[dependencies.myplugin]]
+[[dependencies.moremcmeta_json_reader_plugin]]
 modId = "forge"
 mandatory = true
 versionRange = "[${loaderVersion},)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.myplugin]]
+[[dependencies.moremcmeta_json_reader_plugin]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[${minecraftVersion},)"
