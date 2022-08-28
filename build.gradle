@@ -33,7 +33,7 @@ allprojects {
     project.ext.is_snapshot = project.mod_version.endsWith(SNAPSHOT_SUFFIX)
 
     archivesBaseName = rootProject.archives_base_name
-    version = rootProject.mod_version
+    version = "${project.minecraft_version}-${project.mod_version}"
     group = rootProject.maven_group
 
     project.ext.maven_artifact_id = "${archivesBaseName}-${project.name}"
