@@ -18,9 +18,9 @@
 package io.github.moremcmeta.jsonreaderplugin.forge;
 
 import io.github.moremcmeta.jsonreaderplugin.ModConstants;
-import io.github.soir20.moremcmeta.api.client.MoreMcmetaMetadataReaderPlugin;
-import io.github.soir20.moremcmeta.api.client.metadata.MetadataReader;
-import io.github.soir20.moremcmeta.forge.api.client.MoreMcmetaClientPlugin;
+import io.github.moremcmeta.moremcmeta.api.client.MoreMcmetaMetadataReaderPlugin;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataReader;
+import io.github.moremcmeta.moremcmeta.forge.api.client.MoreMcmetaClientPlugin;
 
 /**
  * Implementation of the JSON reader plugin on Forge.

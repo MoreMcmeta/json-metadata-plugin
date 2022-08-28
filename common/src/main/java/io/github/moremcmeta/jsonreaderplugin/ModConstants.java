@@ -17,7 +17,7 @@
 
 package io.github.moremcmeta.jsonreaderplugin;
 
-import io.github.soir20.moremcmeta.api.client.metadata.MetadataReader;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataReader;
 
 /**
  * Constants for both Fabric and Forge implementations of the plugin.

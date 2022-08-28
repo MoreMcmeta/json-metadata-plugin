@@ -18,8 +18,8 @@
 package io.github.moremcmeta.jsonreaderplugin.fabric;
 
 import io.github.moremcmeta.jsonreaderplugin.ModConstants;
-import io.github.soir20.moremcmeta.api.client.MoreMcmetaMetadataReaderPlugin;
-import io.github.soir20.moremcmeta.api.client.metadata.MetadataReader;
+import io.github.moremcmeta.moremcmeta.api.client.MoreMcmetaMetadataReaderPlugin;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataReader;
 
 /**
  * Implementation of the JSON reader plugin on Fabric.

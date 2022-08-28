@@ -22,7 +22,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.github.soir20.moremcmeta.api.client.metadata.MetadataView;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
 
 import java.math.BigDecimal;
 import java.util.Comparator;

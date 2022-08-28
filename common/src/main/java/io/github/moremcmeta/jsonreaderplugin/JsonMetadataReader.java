@@ -19,8 +19,8 @@ package io.github.moremcmeta.jsonreaderplugin;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import io.github.soir20.moremcmeta.api.client.metadata.MetadataReader;
-import io.github.soir20.moremcmeta.api.client.metadata.MetadataView;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataReader;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import org.apache.commons.compress.utils.IOUtils;
