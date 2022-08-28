@@ -18,6 +18,8 @@ subprojects {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         mappings loom.officialMojangMappings()
 
+        modImplementation "io.github.moremcmeta:moremcmeta-${project.name}:${project.moremcmeta_version}"
+
         testImplementation "junit:junit:${project.junit_version}"
     }
 }
