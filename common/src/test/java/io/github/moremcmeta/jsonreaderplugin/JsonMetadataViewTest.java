@@ -20,7 +20,7 @@ package io.github.moremcmeta.jsonreaderplugin;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.github.soir20.moremcmeta.api.client.metadata.MetadataView;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
