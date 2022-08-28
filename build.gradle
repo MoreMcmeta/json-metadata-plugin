@@ -4,7 +4,7 @@ plugins {
 }
 
 architectury {
-    minecraft = rootProject.minecraft_version
+    minecraft = project.minecraft_version
 }
 
 subprojects {
@@ -15,7 +15,7 @@ subprojects {
     }
 
     dependencies {
-        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        minecraft "com.mojang:minecraft:${project.minecraft_version}"
         mappings loom.officialMojangMappings()
 
         modImplementation "io.github.moremcmeta:moremcmeta-${project.name}:${project.moremcmeta_version}"
@@ -34,9 +34,9 @@ allprojects {
     project.ext.mod_version = System.getenv("MOD_VERSION") ?: "DEV"
     project.ext.is_snapshot = project.mod_version.endsWith(SNAPSHOT_SUFFIX)
 
-    archivesBaseName = rootProject.archives_base_name
+    archivesBaseName = project.archives_base_name
     version = "${project.minecraft_version}-${project.mod_version}"
-    group = rootProject.maven_group
+    group = project.maven_group
 
     project.ext.maven_artifact_id = "${archivesBaseName}-${project.name}"
     project.ext.maven_version = is_snapshot
