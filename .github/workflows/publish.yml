@@ -52,7 +52,7 @@ jobs:
         uses: soir20/read-properties@d61222ac599d7e46922a94dbbb35d181b7b208e1
         with:
           file: "./gradle.properties"
-          property: "minecraftVersion"
+          property: "minecraft_version"
 
       - name: Publish to GitHub Releases
         if: matrix.loader != 'common'
