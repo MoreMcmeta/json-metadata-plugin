@@ -19,6 +19,7 @@ package io.github.moremcmeta.jsonreaderplugin;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.InvalidMetadataException;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataReader;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
 import net.minecraft.resources.ResourceLocation;
@@ -42,7 +43,7 @@ public class JsonMetadataReader implements MetadataReader {
      * @param metadataStream        metadata stream with JSON data
      * @return a view of the parsed metadata. The keys are in order of how plugins
      *         should be applied.
-     * @throws MetadataReader.InvalidMetadataException if the input stream does not contain valid JSON
+     * @throws InvalidMetadataException if the input stream does not contain valid JSON
      */
     @Override
     public ReadMetadata read(ResourceLocation metadataLocation, InputStream metadataStream)
@@ -67,7 +68,7 @@ public class JsonMetadataReader implements MetadataReader {
                     (section1, section2) -> compareSections(unsortedRoot, section1, section2)
             );
         } catch (JsonParseException parseError) {
-            throw new MetadataReader.InvalidMetadataException("Metadata is not valid JSON");
+            throw new InvalidMetadataException("Metadata is not valid JSON");
         } finally {
             IOUtils.closeQuietly(bufferedReader);
         }
