@@ -30,6 +30,10 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Reads JSON metadata from a .moremcmeta file.
@@ -46,7 +50,8 @@ public class JsonMetadataReader implements MetadataReader {
      * @throws InvalidMetadataException if the input stream does not contain valid JSON
      */
     @Override
-    public ReadMetadata read(ResourceLocation metadataLocation, InputStream metadataStream)
+    public Map<ResourceLocation, MetadataView> read(ResourceLocation metadataLocation, InputStream metadataStream,
+                                                    Function<Predicate<String>, Set<ResourceLocation>> resourceSearcher)
             throws InvalidMetadataException {
 
         ResourceLocation textureLocation = new ResourceLocation(
@@ -73,7 +78,7 @@ public class JsonMetadataReader implements MetadataReader {
             IOUtils.closeQuietly(bufferedReader);
         }
 
-        return new ReadMetadata(textureLocation, metadata);
+        return Map.of(textureLocation, metadata);
     }
 
     /**
