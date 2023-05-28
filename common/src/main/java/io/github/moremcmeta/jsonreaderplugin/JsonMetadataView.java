@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -358,6 +359,25 @@ public class JsonMetadataView implements MetadataView {
 
         // The Gson implementation can convert any primitive to a boolean, even if isString() is false
         return primitiveFromIndex(index, (element) -> true, JsonPrimitive::getAsBoolean);
+
+    }
+
+    @Override
+    public Optional<InputStream> byteStreamValue(String key) {
+
+        // Currently, the JSON format does not need to support streams
+        return Optional.empty();
+
+    }
+
+    @Override
+    public Optional<InputStream> byteStreamValue(int index) {
+        if (index < 0) {
+            throw new NegativeKeyIndexException(index);
+        }
+
+        // Currently, the JSON format does not need to support streams
+        return Optional.empty();
 
     }
 

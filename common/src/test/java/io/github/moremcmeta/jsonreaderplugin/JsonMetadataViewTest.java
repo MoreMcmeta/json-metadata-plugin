@@ -3613,6 +3613,421 @@ public class JsonMetadataViewTest {
         );
     }
 
+    @Test
+    public void streamValueStringObject_KeyNotPresent_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("not present").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_KeyAtNextLevel_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("object val1").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_NullVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("null val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_StringVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("string val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_PosIntVal_ValueFound() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("pos int val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_NegIntVal_ValueFound() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("neg int val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_PosLongVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("pos long val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_NegLongVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("neg long val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_PosBeyond64BitsVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("pos int >64-bits val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_NegBeyond64BitsVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("neg int >64-bits val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_PosFloatVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("pos float val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_NegFloatVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("neg float val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_PosDoubleVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("pos double val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_NegDoubleVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("neg double val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_TrueVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("true val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_FalseVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("false val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_ObjectVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("object val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringObject_ArrayVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue("array val0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_KeyNegative_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("-1").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_KeyNotPresent_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("not present").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_KeyAtNextLevel_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("object val1").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_ValidIfNullNotFiltered_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("15").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_StringVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("0").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_PosIntVal_ValueFound() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("1").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_NegIntVal_ValueFound() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("2").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_PosLongVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("3").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_NegLongVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("4").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_PosBeyond64BitsVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("5").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_NegBeyond64BitsVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("6").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_PosFloatVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("7").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_NegFloatVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("8").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_PosDoubleVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("9").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_NegDoubleVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("10").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_TrueVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("11").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_FalseVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("12").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_ObjectVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("13").isPresent());
+    }
+
+    @Test
+    public void streamValueStringArray_ArrayVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue("14").isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_StringVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(13).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_PosIntVal_ValueFound() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(11).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_NegIntVal_ValueFound() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(5).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_PosLongVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(12).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_NegLongVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(6).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_PosBeyond64BitsVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(10).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_NegBeyond64BitsVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(4).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_PosFloatVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(9).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_NegFloatVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(3).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_PosDoubleVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(8).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_NegDoubleVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(2).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_TrueVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(14).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_FalseVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(1).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_ObjectVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(7).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexObject_ArrayVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
+        assertFalse(view.byteStreamValue(0).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_KeyNegative_NegativeKeyIndexException() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        view.byteStreamValue(-1);
+    }
+
+    @Test
+    public void streamValueIndexArray_ValidIfNullNotFiltered_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(15).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_StringVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(0).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_PosIntVal_ValueFound() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(1).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_NegIntVal_ValueFound() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(2).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_PosLongVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(3).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_NegLongVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(4).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_PosBeyond64BitsVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(5).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_NegBeyond64BitsVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(6).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_PosFloatVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(7).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_NegFloatVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(8).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_PosDoubleVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(9).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_NegDoubleVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(10).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_TrueVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(11).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_FalseVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(12).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_ObjectVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(13).isPresent());
+    }
+
+    @Test
+    public void streamValueIndexArray_ArrayVal_Empty() {
+        JsonMetadataView view = new JsonMetadataView(makeDemoArray());
+        assertFalse(view.byteStreamValue(14).isPresent());
+    }
+
     private JsonObject makeDemoObject() {
         JsonObject root = new JsonObject();
         addAllTypeVals(root, 0);

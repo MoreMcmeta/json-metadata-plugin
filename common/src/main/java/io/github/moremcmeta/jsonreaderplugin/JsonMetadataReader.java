@@ -22,6 +22,7 @@ import com.google.gson.JsonParseException;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.InvalidMetadataException;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataReader;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.ResourceRepository;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import org.apache.commons.compress.utils.IOUtils;
@@ -31,9 +32,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * Reads JSON metadata from a .moremcmeta file.
@@ -41,17 +39,9 @@ import java.util.function.Predicate;
  */
 public class JsonMetadataReader implements MetadataReader {
 
-    /**
-     * Reads JSON metadata from an input stream.
-     * @param metadataLocation      location of the metadata file
-     * @param metadataStream        metadata stream with JSON data
-     * @return a view of the parsed metadata. The keys are in order of how plugins
-     *         should be applied.
-     * @throws InvalidMetadataException if the input stream does not contain valid JSON
-     */
     @Override
     public Map<ResourceLocation, MetadataView> read(ResourceLocation metadataLocation, InputStream metadataStream,
-                                                    Function<Predicate<String>, Set<ResourceLocation>> resourceSearcher)
+                                                    ResourceRepository resourceRepository)
             throws InvalidMetadataException {
 
         ResourceLocation textureLocation = new ResourceLocation(
