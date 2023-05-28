@@ -73,19 +73,11 @@ public class JsonMetadataView implements MetadataView {
         KEYS = IntStream.range(0, SIZE).mapToObj(String::valueOf).toList();
     }
 
-    /**
-     * Gets the number of top-level keys in this view.
-     * @return number of top-level keys
-     */
     @Override
     public int size() {
         return SIZE;
     }
 
-    /**
-     * Gets all the top-level keys in this view.
-     * @return all the top-level keys in this view
-     */
     @Override
     public Iterable<String> keys() {
 
@@ -94,12 +86,6 @@ public class JsonMetadataView implements MetadataView {
 
     }
 
-    /**
-     * Checks if this view has a data value or sub-view for a top-level key with the
-     * given name.
-     * @param key       the key to check for
-     * @return true if the view has a data value or sub-view for this key or false otherwise
-     */
     @Override
     public boolean hasKey(String key) {
         requireNonNull(key, "Key cannot be null");
@@ -111,14 +97,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * Checks if this view has a data value or sub-view for a top-level key at the
-     * given index (starting at 0). Returns false for any positive or negative index out of
-     * bounds.
-     * @param index       the index of the key to check for
-     * @return true if the view has a data value or sub-view for this key or false otherwise
-     * @throws NegativeKeyIndexException if the provided index is negative
-     */
     @Override
     public boolean hasKey(int index) {
         if (index < 0) {
@@ -128,19 +106,6 @@ public class JsonMetadataView implements MetadataView {
         return index < SIZE;
     }
 
-    /**
-     * <p> Retrieves the value of a string for the given key if any exists. If there is no such key or
-     * the key's associated value is not a valid string, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(String)} can be used to determine whether the key is present or the value is
-     * not a string.
-     *
-     * <p> Any value that is not a sub-view can be converted to a string, so this method will return a
-     * string whenever {@link #hasKey(String)} returns true.
-     * @param key       the key whose string value to retrieve
-     * @return An {@link Optional} containing the string value or {@link Optional#empty()} if there is
-     *         string value associated with the key. The string inside the {@link Optional} will never
-     *         be null.
-     */
     @Override
     public Optional<String> stringValue(String key) {
 
@@ -149,20 +114,6 @@ public class JsonMetadataView implements MetadataView {
 
     }
 
-    /**
-     * <p> Retrieves the value of a string for the key at the given index if any exists. If there is no such
-     * key or the key's associated value is not a valid string, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(String)} can be used to determine whether the key is present or the value is
-     * not a string.
-     *
-     * <p> Any value that is not a sub-view can be converted to a string, so this method will return a
-     * string whenever {@link #hasKey(int)} returns true.
-     * @param index       the index of the key whose boolean value to retrieve
-     * @return An {@link Optional} containing the string value or {@link Optional#empty()} if there is
-     *         string value associated with the key. The string inside the {@link Optional} will never
-     *         be null.
-     * @throws NegativeKeyIndexException if the provided index is negative
-     */
     @Override
     public Optional<String> stringValue(int index) {
 
@@ -171,16 +122,6 @@ public class JsonMetadataView implements MetadataView {
 
     }
 
-    /**
-     * Retrieves the value of a signed 32-bit integer for the given key if any exists. If there is no such key or
-     * the key's associated value is not a valid signed 32-bit integer, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(String)} can be used to determine whether the key is present or the value is
-     * not an integer.
-     * @param key       the key whose signed 32-bit integer value to retrieve
-     * @return An {@link Optional} containing the integer value or {@link Optional#empty()} if there is
-     *         integer value associated with the key. The integer inside the {@link Optional} will never
-     *         be null.
-     */
     @Override
     public Optional<Integer> integerValue(String key) {
         return primitiveFromKey(key,
@@ -189,17 +130,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * Retrieves the value of a signed 32-bit integer for the key at the given index if any exists. If there is no
-     * such key or the key's associated value is not a valid signed 32-bit integer, this method returns
-     * {@link Optional#empty()}. {@link #hasKey(int)} can be used to determine whether the key is present or
-     * the value is not an integer.
-     * @param index       the index of the key whose boolean value to retrieve
-     * @return An {@link Optional} containing the integer value or {@link Optional#empty()} if there is
-     *         integer value associated with the key. The integer inside the {@link Optional} will never
-     *         be null.
-     * @throws NegativeKeyIndexException if the provided index is negative
-     */
     @Override
     public Optional<Integer> integerValue(int index) {
         return primitiveFromIndex(index,
@@ -208,16 +138,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * Retrieves the value of a signed 64-bit long for the given key if any exists. If there is no such key or
-     * the key's associated value is not a valid signed 64-bit long, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(String)} can be used to determine whether the key is present or the value is
-     * not a long.
-     * @param key       the key whose signed 64-bit long value to retrieve
-     * @return An {@link Optional} containing the long value or {@link Optional#empty()} if there is
-     *         long value associated with the key. The long inside the {@link Optional} will never
-     *         be null.
-     */
     @Override
     public Optional<Long> longValue(String key) {
         return primitiveFromKey(key,
@@ -226,17 +146,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * Retrieves the value of a signed 64-bit long for the key at the given index if any exists. If there is
-     * no such key or the key's associated value is not a valid signed 64-bit long, this method returns
-     * {@link Optional#empty()}. {@link #hasKey(int)} can be used to determine whether the key is present
-     * or the value is not a long.
-     * @param index       the index of the key whose boolean value to retrieve
-     * @return An {@link Optional} containing the long value or {@link Optional#empty()} if there is
-     *         long value associated with the key. The long inside the {@link Optional} will never
-     *         be null.
-     * @throws NegativeKeyIndexException if the provided index is negative
-     */
     @Override
     public Optional<Long> longValue(int index) {
         return primitiveFromIndex(index,
@@ -245,16 +154,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * Retrieves the value of a float for the given key if any exists. If there is no such key or
-     * the key's associated value is not a valid float, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(String)} can be used to determine whether the key is present or the value is
-     * not a float.
-     * @param key       the key whose float value to retrieve
-     * @return An {@link Optional} containing the float value or {@link Optional#empty()} if there is
-     *         float value associated with the key. The float inside the {@link Optional} will never
-     *         be null.
-     */
     @Override
     public Optional<Float> floatValue(String key) {
         return primitiveFromKey(key,
@@ -263,17 +162,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * Retrieves the value of a float for the key at the given index if any exists. If there is no such
-     * key or the key's associated value is not a valid float, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(int)} can be used to determine whether the key is present or the value is
-     * not a float.
-     * @param index       the index of the key whose boolean value to retrieve
-     * @return An {@link Optional} containing the float value or {@link Optional#empty()} if there is
-     *         float value associated with the key. The float inside the {@link Optional} will never
-     *         be null.
-     * @throws NegativeKeyIndexException if the provided index is negative
-     */
     @Override
     public Optional<Float> floatValue(int index) {
         return primitiveFromIndex(index,
@@ -282,16 +170,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * Retrieves the value of a double for the given key if any exists. If there is no such key or
-     * the key's associated value is not a valid double, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(String)} can be used to determine whether the key is present or the value is
-     * not a double.
-     * @param key       the key whose double value to retrieve
-     * @return An {@link Optional} containing the double value or {@link Optional#empty()} if there is
-     *         double value associated with the key. The double inside the {@link Optional} will never
-     *         be null.
-     */
     @Override
     public Optional<Double> doubleValue(String key) {
         return primitiveFromKey(key,
@@ -300,17 +178,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * Retrieves the value of a double for the key at the given index if any exists. If there is no such
-     * key or the key's associated value is not a valid double, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(int)} can be used to determine whether the key is present or the value is
-     * not a double.
-     * @param index       the index of the key whose boolean value to retrieve
-     * @return An {@link Optional} containing the double value or {@link Optional#empty()} if there is
-     *         double value associated with the key. The double inside the {@link Optional} will never
-     *         be null.
-     * @throws NegativeKeyIndexException if the provided index is negative
-     */
     @Override
     public Optional<Double> doubleValue(int index) {
         return primitiveFromIndex(index,
@@ -319,19 +186,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * <p> Retrieves the value of a boolean for the given key if any exists. If there is no such key or
-     * the key's associated value is not a valid boolean, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(String)} can be used to determine whether the key is present or the value is
-     * not a boolean.
-     *
-     * <p> A value is considered true if it is equivalent to the string "true" (case-insensitive). Otherwise,
-     * the value is considered false. However, a sub-view is not considered a valid boolean.
-     * @param key       the key whose boolean value to retrieve
-     * @return An {@link Optional} containing the boolean value or {@link Optional#empty()} if there is
-     *         boolean value associated with the key. The boolean inside the {@link Optional} will never
-     *         be null.
-     */
     @Override
     public Optional<Boolean> booleanValue(String key) {
 
@@ -340,20 +194,6 @@ public class JsonMetadataView implements MetadataView {
 
     }
 
-    /**
-     * <p> Retrieves the value of a boolean for the key at the given index if any exists. If there is no such
-     * key or the key's associated value is not a valid boolean, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(int)} can be used to determine whether the key is present or the value is
-     * not a boolean.
-     *
-     * <p> A value is considered true if it is equivalent to the string "true" (case-insensitive). Otherwise,
-     * the value is considered false. However, a sub-view is not considered a valid boolean.
-     * @param index       the index of the key whose boolean value to retrieve
-     * @return An {@link Optional} containing the boolean value or {@link Optional#empty()} if there is
-     *         boolean value associated with the key. The boolean inside the {@link Optional} will never
-     *         be null.
-     * @throws NegativeKeyIndexException if the provided index is negative
-     */
     @Override
     public Optional<Boolean> booleanValue(int index) {
 
@@ -381,16 +221,6 @@ public class JsonMetadataView implements MetadataView {
 
     }
 
-    /**
-     * Retrieves the sub-view for the given key if any exists. If there is no such key or
-     * the key's associated value is not a valid sub-view, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(String)} can be used to determine whether the key is present or the value is
-     * not a sub-view.
-     * @param key       the key whose sub-view to retrieve
-     * @return An {@link Optional} containing the sub-view or {@link Optional#empty()} if there is
-     *         sub-view associated with the key. The sub-view inside the {@link Optional} will never
-     *         be null.
-     */
     @Override
     public Optional<MetadataView> subView(String key) {
         return ROOT.get(
@@ -413,17 +243,6 @@ public class JsonMetadataView implements MetadataView {
         );
     }
 
-    /**
-     * Retrieves a sub-view for the key at the given index if any exists. If there is no such
-     * key or the key's associated value is not a valid sub-view, this method returns {@link Optional#empty()}.
-     * {@link #hasKey(int)} can be used to determine whether the key is present or the value is
-     * not a sub-view.
-     * @param index       the index of the key whose sub-view value to retrieve
-     * @return An {@link Optional} containing the sub-view or {@link Optional#empty()} if there is
-     *         sub-view associated with the key. The sub-view inside the {@link Optional} will never
-     *         be null.
-     * @throws NegativeKeyIndexException if the provided index is negative
-     */
     @Override
     public Optional<MetadataView> subView(int index) {
         if (!hasKey(index)) {
