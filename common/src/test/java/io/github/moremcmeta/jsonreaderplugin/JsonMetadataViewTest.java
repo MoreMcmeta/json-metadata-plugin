@@ -3638,13 +3638,13 @@ public class JsonMetadataViewTest {
     }
 
     @Test
-    public void streamValueStringObject_PosIntVal_ValueFound() {
+    public void streamValueStringObject_PosIntVal_Empty() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
         assertFalse(view.byteStreamValue("pos int val0").isPresent());
     }
 
     @Test
-    public void streamValueStringObject_NegIntVal_ValueFound() {
+    public void streamValueStringObject_NegIntVal_Empty() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
         assertFalse(view.byteStreamValue("neg int val0").isPresent());
     }
@@ -3752,13 +3752,13 @@ public class JsonMetadataViewTest {
     }
 
     @Test
-    public void streamValueStringArray_PosIntVal_ValueFound() {
+    public void streamValueStringArray_PosIntVal_Empty() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
         assertFalse(view.byteStreamValue("1").isPresent());
     }
 
     @Test
-    public void streamValueStringArray_NegIntVal_ValueFound() {
+    public void streamValueStringArray_NegIntVal_Empty() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
         assertFalse(view.byteStreamValue("2").isPresent());
     }
@@ -3842,13 +3842,13 @@ public class JsonMetadataViewTest {
     }
 
     @Test
-    public void streamValueIndexObject_PosIntVal_ValueFound() {
+    public void streamValueIndexObject_PosIntVal_Empty() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
         assertFalse(view.byteStreamValue(11).isPresent());
     }
 
     @Test
-    public void streamValueIndexObject_NegIntVal_ValueFound() {
+    public void streamValueIndexObject_NegIntVal_Empty() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
         assertFalse(view.byteStreamValue(5).isPresent());
     }
@@ -3945,13 +3945,13 @@ public class JsonMetadataViewTest {
     }
 
     @Test
-    public void streamValueIndexArray_PosIntVal_ValueFound() {
+    public void streamValueIndexArray_PosIntVal_Empty() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
         assertFalse(view.byteStreamValue(1).isPresent());
     }
 
     @Test
-    public void streamValueIndexArray_NegIntVal_ValueFound() {
+    public void streamValueIndexArray_NegIntVal_Empty() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
         assertFalse(view.byteStreamValue(2).isPresent());
     }
