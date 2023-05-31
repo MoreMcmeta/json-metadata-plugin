@@ -15,33 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.moremcmeta.jsonreaderplugin.forge;
+package io.github.moremcmeta.jsonparserplugin;
 
-import io.github.moremcmeta.jsonreaderplugin.ModConstants;
-import io.github.moremcmeta.moremcmeta.api.client.MoreMcmetaMetadataParserPlugin;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
-import io.github.moremcmeta.moremcmeta.forge.api.client.MoreMcmetaClientPlugin;
 
 /**
- * Implementation of the JSON parser plugin on Forge.
+ * Constants for both Fabric and Forge implementations of the plugin.
  * @author soir20
  */
-@MoreMcmetaClientPlugin
-@SuppressWarnings("unused")
-public class JsonParserPluginForge implements MoreMcmetaMetadataParserPlugin {
-
-    @Override
-    public String extension() {
-        return ModConstants.EXTENSION;
-    }
-
-    @Override
-    public MetadataParser metadataParser() {
-        return ModConstants.PARSER;
-    }
-
-    @Override
-    public String displayName() {
-        return ModConstants.DISPLAY_NAME;
-    }
+public class ModConstants {
+    public static final String MOD_ID = "moremcmeta_json_parser_plugin";
+    public static final String DISPLAY_NAME = "MoreMcmeta JSON Metadata Parser";
+    public static final MetadataParser PARSER = new JsonMetadataParser();
+    public static final String EXTENSION = "moremcmeta";
 }

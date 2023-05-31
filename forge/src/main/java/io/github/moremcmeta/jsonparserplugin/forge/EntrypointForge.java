@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.moremcmeta.jsonreaderplugin.forge;
+package io.github.moremcmeta.jsonparserplugin.forge;
 
-import io.github.moremcmeta.jsonreaderplugin.ModConstants;
+import io.github.moremcmeta.jsonparserplugin.ModConstants;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;

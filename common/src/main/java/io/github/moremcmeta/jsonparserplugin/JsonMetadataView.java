@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.moremcmeta.jsonreaderplugin;
+package io.github.moremcmeta.jsonparserplugin;
 
 import com.google.common.primitives.Ints;
 import com.google.gson.JsonArray;

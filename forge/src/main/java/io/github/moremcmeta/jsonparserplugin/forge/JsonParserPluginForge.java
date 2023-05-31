@@ -15,18 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.moremcmeta.jsonreaderplugin.fabric;
+package io.github.moremcmeta.jsonparserplugin.forge;
 
-import io.github.moremcmeta.jsonreaderplugin.ModConstants;
+import io.github.moremcmeta.jsonparserplugin.ModConstants;
 import io.github.moremcmeta.moremcmeta.api.client.MoreMcmetaMetadataParserPlugin;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
+import io.github.moremcmeta.moremcmeta.forge.api.client.MoreMcmetaClientPlugin;
 
 /**
- * Implementation of the JSON parser plugin on Fabric.
+ * Implementation of the JSON parser plugin on Forge.
  * @author soir20
  */
+@MoreMcmetaClientPlugin
 @SuppressWarnings("unused")
-public class JsonParserPluginFabric implements MoreMcmetaMetadataParserPlugin {
+public class JsonParserPluginForge implements MoreMcmetaMetadataParserPlugin {
 
     @Override
     public String extension() {
