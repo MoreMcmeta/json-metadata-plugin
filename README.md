@@ -1,2 +1,2 @@
-# MoreMcmeta JSON Reader Plugin
-Default plugin for MoreMcmeta that reads JSON (`.moremcmeta`) metadata files.
+# MoreMcmeta JSON Parser Plugin
+Default plugin for MoreMcmeta that parses JSON (`.moremcmeta`) metadata files.

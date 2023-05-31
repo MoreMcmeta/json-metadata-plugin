@@ -1,5 +1,5 @@
 /*
- * JSON Reader Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
+ * JSON Parser Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
  * Copyright (C) 2022 soir20
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ package io.github.moremcmeta.jsonreaderplugin;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.NegativeKeyIndexException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -426,7 +426,7 @@ public class JsonMetadataViewTest {
     @Test
     public void hasKeyIndexObject_NegativeIndex_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.hasKey(-1);
     }
 
@@ -529,7 +529,7 @@ public class JsonMetadataViewTest {
     @Test
     public void hasKeyIndexArray_NegativeIndex_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.hasKey(-1);
     }
 
@@ -944,7 +944,7 @@ public class JsonMetadataViewTest {
     @Test
     public void stringValueIndexArray_KeyNegative_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.stringValue(-1);
     }
 
@@ -1359,7 +1359,7 @@ public class JsonMetadataViewTest {
     @Test
     public void integerValueIndexArray_KeyNegative_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.integerValue(-1);
     }
 
@@ -1774,7 +1774,7 @@ public class JsonMetadataViewTest {
     @Test
     public void longValueIndexArray_KeyNegative_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.longValue(-1);
     }
 
@@ -2189,7 +2189,7 @@ public class JsonMetadataViewTest {
     @Test
     public void floatValueIndexArray_KeyNegative_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.floatValue(-1);
     }
 
@@ -2604,7 +2604,7 @@ public class JsonMetadataViewTest {
     @Test
     public void doubleValueIndexArray_KeyNegative_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.doubleValue(-1);
     }
 
@@ -3019,7 +3019,7 @@ public class JsonMetadataViewTest {
     @Test
     public void booleanValueIndexArray_KeyNegative_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.booleanValue(-1);
     }
 
@@ -3505,7 +3505,7 @@ public class JsonMetadataViewTest {
     @Test
     public void subViewIndexArray_KeyNegative_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.subView(-1);
     }
 
@@ -3928,7 +3928,7 @@ public class JsonMetadataViewTest {
     @Test
     public void streamValueIndexArray_KeyNegative_NegativeKeyIndexException() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        expectedException.expect(MetadataView.NegativeKeyIndexException.class);
+        expectedException.expect(NegativeKeyIndexException.class);
         view.byteStreamValue(-1);
     }
 

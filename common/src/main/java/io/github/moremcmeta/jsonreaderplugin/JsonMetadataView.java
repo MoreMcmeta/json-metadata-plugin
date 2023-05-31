@@ -1,5 +1,5 @@
 /*
- * JSON Reader Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
+ * JSON Parser Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
  * Copyright (C) 2022 soir20
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.NegativeKeyIndexException;
 
 import java.io.InputStream;
 import java.math.BigDecimal;

@@ -1,5 +1,5 @@
 /*
- * JSON Reader Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
+ * JSON Parser Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
  * Copyright (C) 2022 soir20
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ package io.github.moremcmeta.jsonreaderplugin;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.InvalidMetadataException;
-import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataReader;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.ResourceRepository;
 import net.minecraft.resources.ResourceLocation;
@@ -37,11 +37,11 @@ import java.util.Map;
  * Reads JSON metadata from a .moremcmeta file.
  * @author soir20
  */
-public class JsonMetadataReader implements MetadataReader {
+public class JsonMetadataParser implements MetadataParser {
 
     @Override
-    public Map<ResourceLocation, MetadataView> read(ResourceLocation metadataLocation, InputStream metadataStream,
-                                                    ResourceRepository resourceRepository)
+    public Map<ResourceLocation, MetadataView> parse(ResourceLocation metadataLocation, InputStream metadataStream,
+                                                     ResourceRepository resourceRepository)
             throws InvalidMetadataException {
 
         ResourceLocation textureLocation = new ResourceLocation(

@@ -1,5 +1,5 @@
 /*
- * JSON Reader Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
+ * JSON Parser Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
  * Copyright (C) 2022 soir20
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,14 +18,15 @@
 package io.github.moremcmeta.jsonreaderplugin.fabric;
 
 import io.github.moremcmeta.jsonreaderplugin.ModConstants;
-import io.github.moremcmeta.moremcmeta.api.client.MoreMcmetaMetadataReaderPlugin;
-import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataReader;
+import io.github.moremcmeta.moremcmeta.api.client.MoreMcmetaMetadataParserPlugin;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
 
 /**
- * Implementation of the JSON reader plugin on Fabric.
+ * Implementation of the JSON parser plugin on Fabric.
  * @author soir20
  */
-public class JsonReaderPluginFabric implements MoreMcmetaMetadataReaderPlugin {
+@SuppressWarnings("unused")
+public class JsonParserPluginFabric implements MoreMcmetaMetadataParserPlugin {
 
     @Override
     public String extension() {
@@ -33,8 +34,8 @@ public class JsonReaderPluginFabric implements MoreMcmetaMetadataReaderPlugin {
     }
 
     @Override
-    public MetadataReader metadataReader() {
-        return ModConstants.READER;
+    public MetadataParser metadataParser() {
+        return ModConstants.PARSER;
     }
 
     @Override
