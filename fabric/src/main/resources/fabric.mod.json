@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "moremcmeta_json_reader_plugin",
+  "id": "moremcmeta_json_parser_plugin",
   "version": "${modVersion}",
-  "name": "MoreMcmeta JSON Reader Plugin",
+  "name": "MoreMcmeta JSON Parser Plugin",
   "description": "Default plugin for MoreMcmeta that reads JSON (.moremcmeta) metadata files.",
   "authors": [
     "soir20"
@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "moremcmeta-client": [
-      "io.github.moremcmeta.jsonreaderplugin.fabric.JsonReaderPluginFabric"
+      "io.github.moremcmeta.jsonparserplugin.fabric.JsonParserPluginFabric"
     ]
   },
   "depends": {

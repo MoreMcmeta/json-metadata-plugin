@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# JSON Reader Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
+# JSON Parser Plugin is a plugin for MoreMcmeta that reads JSON metadata files.
 # Copyright (C) 2022 soir20
 #
 # This program is free software: you can redistribute it and/or modify
