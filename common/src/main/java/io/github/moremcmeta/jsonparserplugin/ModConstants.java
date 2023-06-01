@@ -25,7 +25,6 @@ import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
  */
 public class ModConstants {
     public static final String MOD_ID = "moremcmeta_json_parser_plugin";
-    public static final String DISPLAY_NAME = "MoreMcmeta JSON Metadata Parser";
     public static final MetadataParser PARSER = new JsonMetadataParser();
     public static final String EXTENSION = "moremcmeta";
 }

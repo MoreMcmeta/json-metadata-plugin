@@ -39,7 +39,7 @@ public class JsonParserPluginFabric implements MoreMcmetaMetadataParserPlugin {
     }
 
     @Override
-    public String displayName() {
-        return ModConstants.DISPLAY_NAME;
+    public String id() {
+        return ModConstants.MOD_ID;
     }
 }
