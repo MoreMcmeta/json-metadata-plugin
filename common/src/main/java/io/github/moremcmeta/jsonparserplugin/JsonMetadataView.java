@@ -39,7 +39,7 @@ import static java.util.Objects.requireNonNull;
  * {@link MetadataView} implementation with an underlying JSON format.
  * @author soir20
  */
-public class JsonMetadataView implements MetadataView {
+public final class JsonMetadataView implements MetadataView {
     private final Root ROOT;
     private final List<String> KEYS;
     private final int SIZE;

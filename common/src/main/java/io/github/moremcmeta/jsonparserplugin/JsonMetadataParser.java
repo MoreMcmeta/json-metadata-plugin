@@ -37,7 +37,7 @@ import java.util.Map;
  * Reads JSON metadata from a .moremcmeta file.
  * @author soir20
  */
-public class JsonMetadataParser implements MetadataParser {
+public final class JsonMetadataParser implements MetadataParser {
 
     @Override
     public Map<ResourceLocation, MetadataView> parse(ResourceLocation metadataLocation, InputStream metadataStream,

@@ -41,7 +41,7 @@ import static org.junit.Assert.assertTrue;
  * Tests the {@link JsonMetadataView}.
  * @author soir20
  */
-public class JsonMetadataViewTest {
+public final class JsonMetadataViewTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 

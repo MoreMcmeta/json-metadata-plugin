@@ -28,7 +28,7 @@ import io.github.moremcmeta.moremcmeta.forge.api.client.MoreMcmetaClientPlugin;
  */
 @MoreMcmetaClientPlugin
 @SuppressWarnings("unused")
-public class JsonParserPluginForge implements MoreMcmetaMetadataParserPlugin {
+public final class JsonParserPluginForge implements MoreMcmetaMetadataParserPlugin {
 
     @Override
     public String extension() {

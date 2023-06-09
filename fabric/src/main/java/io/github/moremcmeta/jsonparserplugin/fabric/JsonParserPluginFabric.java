@@ -26,7 +26,7 @@ import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
  * @author soir20
  */
 @SuppressWarnings("unused")
-public class JsonParserPluginFabric implements MoreMcmetaMetadataParserPlugin {
+public final class JsonParserPluginFabric implements MoreMcmetaMetadataParserPlugin {
 
     @Override
     public String extension() {
