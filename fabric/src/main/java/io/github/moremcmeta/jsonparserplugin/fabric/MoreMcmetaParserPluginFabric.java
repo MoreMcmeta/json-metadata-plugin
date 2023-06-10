@@ -22,15 +22,15 @@ import io.github.moremcmeta.moremcmeta.api.client.MoreMcmetaMetadataParserPlugin
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
 
 /**
- * Implementation of the JSON parser plugin on Fabric.
+ * Implementation of the JSON parser plugin on Fabric for the .moremcmeta extension.
  * @author soir20
  */
 @SuppressWarnings("unused")
-public final class JsonParserPluginFabric implements MoreMcmetaMetadataParserPlugin {
+public final class MoreMcmetaParserPluginFabric implements MoreMcmetaMetadataParserPlugin {
 
     @Override
     public String extension() {
-        return ModConstants.EXTENSION;
+        return ModConstants.MOREMCMETA_EXTENSION;
     }
 
     @Override
@@ -40,6 +40,6 @@ public final class JsonParserPluginFabric implements MoreMcmetaMetadataParserPlu
 
     @Override
     public String id() {
-        return ModConstants.MOD_ID;
+        return ModConstants.MOREMCMETA_EXT_PLUGIN_ID;
     }
 }

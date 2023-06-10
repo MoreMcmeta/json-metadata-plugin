@@ -23,16 +23,16 @@ import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
 import io.github.moremcmeta.moremcmeta.forge.api.client.MoreMcmetaClientPlugin;
 
 /**
- * Implementation of the JSON parser plugin on Forge.
+ * Implementation of the JSON parser plugin on Forge for the .moremcmeta extension.
  * @author soir20
  */
 @MoreMcmetaClientPlugin
 @SuppressWarnings("unused")
-public final class JsonParserPluginForge implements MoreMcmetaMetadataParserPlugin {
+public final class MoreMcmetaParserPluginForge implements MoreMcmetaMetadataParserPlugin {
 
     @Override
     public String extension() {
-        return ModConstants.EXTENSION;
+        return ModConstants.MOREMCMETA_EXTENSION;
     }
 
     @Override
@@ -42,6 +42,6 @@ public final class JsonParserPluginForge implements MoreMcmetaMetadataParserPlug
 
     @Override
     public String id() {
-        return ModConstants.MOD_ID;
+        return ModConstants.MOREMCMETA_EXT_PLUGIN_ID;
     }
 }
