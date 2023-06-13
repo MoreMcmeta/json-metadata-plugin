@@ -17,6 +17,8 @@
 
 package io.github.moremcmeta.jsonparserplugin;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -29,7 +31,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -41,6 +42,7 @@ import static org.junit.Assert.assertTrue;
  * Tests the {@link JsonMetadataView}.
  * @author soir20
  */
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public final class JsonMetadataViewTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -146,7 +148,7 @@ public final class JsonMetadataViewTest {
     @Test
     public void keysObject_Empty_NoKeys() {
         JsonMetadataView view = new JsonMetadataView(new JsonObject(), String::compareTo);
-        assertEquals(List.of(), collectKeys(view.keys()));
+        assertEquals(ImmutableList.of(), collectKeys(view.keys()));
     }
 
     @Test
@@ -156,7 +158,7 @@ public final class JsonMetadataViewTest {
         root.add("world", new JsonPrimitive(true));
         root.add("test", new JsonPrimitive("good morning"));
         JsonMetadataView view = new JsonMetadataView(root, String::compareTo);
-        assertEquals(List.of("hello", "test", "world"), collectKeys(view.keys()));
+        assertEquals(ImmutableList.of("hello", "test", "world"), collectKeys(view.keys()));
     }
 
     @Test
@@ -169,13 +171,13 @@ public final class JsonMetadataViewTest {
         root.get("testing").getAsJsonObject().add("metadata", new JsonPrimitive(20));
         root.get("testing").getAsJsonObject().add("view", new JsonPrimitive(false));
         JsonMetadataView view = new JsonMetadataView(root, String::compareTo);
-        assertEquals(List.of("hello", "test", "testing", "world"), collectKeys(view.keys()));
+        assertEquals(ImmutableList.of("hello", "test", "testing", "world"), collectKeys(view.keys()));
     }
 
     @Test
     public void keysArray_Empty_NoKeys() {
         JsonMetadataView view = new JsonMetadataView(new JsonArray());
-        assertEquals(List.of(), collectKeys(view.keys()));
+        assertEquals(ImmutableList.of(), collectKeys(view.keys()));
     }
 
     @Test
@@ -185,7 +187,7 @@ public final class JsonMetadataViewTest {
         root.add(true);
         root.add("good morning");
         JsonMetadataView view = new JsonMetadataView(root);
-        assertEquals(List.of("0", "1", "2"), collectKeys(view.keys()));
+        assertEquals(ImmutableList.of("0", "1", "2"), collectKeys(view.keys()));
     }
 
     @Test
@@ -198,7 +200,7 @@ public final class JsonMetadataViewTest {
         root.get(3).getAsJsonObject().add("metadata", new JsonPrimitive(20));
         root.get(3).getAsJsonObject().add("view", new JsonPrimitive(false));
         JsonMetadataView view = new JsonMetadataView(root);
-        assertEquals(List.of("0", "1", "2", "3"), collectKeys(view.keys()));
+        assertEquals(ImmutableList.of("0", "1", "2", "3"), collectKeys(view.keys()));
     }
 
     @Test
@@ -650,79 +652,79 @@ public final class JsonMetadataViewTest {
     @Test
     public void stringValueStringObject_StringVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("hello world", view.stringValue("string val0").orElseThrow());
+        assertEquals("hello world", view.stringValue("string val0").get());
     }
 
     @Test
     public void stringValueStringObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Integer.MAX_VALUE), view.stringValue("pos int val0").orElseThrow());
+        assertEquals(String.valueOf(Integer.MAX_VALUE), view.stringValue("pos int val0").get());
     }
 
     @Test
     public void stringValueStringObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Integer.MIN_VALUE), view.stringValue("neg int val0").orElseThrow());
+        assertEquals(String.valueOf(Integer.MIN_VALUE), view.stringValue("neg int val0").get());
     }
 
     @Test
     public void stringValueStringObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Long.MAX_VALUE), view.stringValue("pos long val0").orElseThrow());
+        assertEquals(String.valueOf(Long.MAX_VALUE), view.stringValue("pos long val0").get());
     }
 
     @Test
     public void stringValueStringObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Long.MIN_VALUE), view.stringValue("neg long val0").orElseThrow());
+        assertEquals(String.valueOf(Long.MIN_VALUE), view.stringValue("neg long val0").get());
     }
 
     @Test
     public void stringValueStringObject_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("9223372036854775808", view.stringValue("pos int >64-bits val0").orElseThrow());
+        assertEquals("9223372036854775808", view.stringValue("pos int >64-bits val0").get());
     }
 
     @Test
     public void stringValueStringObject_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("-9223372036854775809", view.stringValue("neg int >64-bits val0").orElseThrow());
+        assertEquals("-9223372036854775809", view.stringValue("neg int >64-bits val0").get());
     }
 
     @Test
     public void stringValueStringObject_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Float.MAX_VALUE), view.stringValue("pos float val0").orElseThrow());
+        assertEquals(String.valueOf(Float.MAX_VALUE), view.stringValue("pos float val0").get());
     }
 
     @Test
     public void stringValueStringObject_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(-Float.MAX_VALUE), view.stringValue("neg float val0").orElseThrow());
+        assertEquals(String.valueOf(-Float.MAX_VALUE), view.stringValue("neg float val0").get());
     }
 
     @Test
     public void stringValueStringObject_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Double.MAX_VALUE), view.stringValue("pos double val0").orElseThrow());
+        assertEquals(String.valueOf(Double.MAX_VALUE), view.stringValue("pos double val0").get());
     }
 
     @Test
     public void stringValueStringObject_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(-Double.MAX_VALUE), view.stringValue("neg double val0").orElseThrow());
+        assertEquals(String.valueOf(-Double.MAX_VALUE), view.stringValue("neg double val0").get());
     }
 
     @Test
     public void stringValueStringObject_TrueVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("true", view.stringValue("true val0").orElseThrow());
+        assertEquals("true", view.stringValue("true val0").get());
     }
 
     @Test
     public void stringValueStringObject_FalseVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("false", view.stringValue("false val0").orElseThrow());
+        assertEquals("false", view.stringValue("false val0").get());
     }
 
     @Test
@@ -764,79 +766,79 @@ public final class JsonMetadataViewTest {
     @Test
     public void stringValueStringArray_StringVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("hello world", view.stringValue("0").orElseThrow());
+        assertEquals("hello world", view.stringValue("0").get());
     }
 
     @Test
     public void stringValueStringArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Integer.MAX_VALUE), view.stringValue("1").orElseThrow());
+        assertEquals(String.valueOf(Integer.MAX_VALUE), view.stringValue("1").get());
     }
 
     @Test
     public void stringValueStringArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Integer.MIN_VALUE), view.stringValue("2").orElseThrow());
+        assertEquals(String.valueOf(Integer.MIN_VALUE), view.stringValue("2").get());
     }
 
     @Test
     public void stringValueStringArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Long.MAX_VALUE), view.stringValue("3").orElseThrow());
+        assertEquals(String.valueOf(Long.MAX_VALUE), view.stringValue("3").get());
     }
 
     @Test
     public void stringValueStringArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Long.MIN_VALUE), view.stringValue("4").orElseThrow());
+        assertEquals(String.valueOf(Long.MIN_VALUE), view.stringValue("4").get());
     }
 
     @Test
     public void stringValueStringArray_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("9223372036854775808", view.stringValue("5").orElseThrow());
+        assertEquals("9223372036854775808", view.stringValue("5").get());
     }
 
     @Test
     public void stringValueStringArray_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("-9223372036854775809", view.stringValue("6").orElseThrow());
+        assertEquals("-9223372036854775809", view.stringValue("6").get());
     }
 
     @Test
     public void stringValueStringArray_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Float.MAX_VALUE), view.stringValue("7").orElseThrow());
+        assertEquals(String.valueOf(Float.MAX_VALUE), view.stringValue("7").get());
     }
 
     @Test
     public void stringValueStringArray_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(-Float.MAX_VALUE), view.stringValue("8").orElseThrow());
+        assertEquals(String.valueOf(-Float.MAX_VALUE), view.stringValue("8").get());
     }
 
     @Test
     public void stringValueStringArray_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Double.MAX_VALUE), view.stringValue("9").orElseThrow());
+        assertEquals(String.valueOf(Double.MAX_VALUE), view.stringValue("9").get());
     }
 
     @Test
     public void stringValueStringArray_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(-Double.MAX_VALUE), view.stringValue("10").orElseThrow());
+        assertEquals(String.valueOf(-Double.MAX_VALUE), view.stringValue("10").get());
     }
 
     @Test
     public void stringValueStringArray_TrueVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("true", view.stringValue("11").orElseThrow());
+        assertEquals("true", view.stringValue("11").get());
     }
 
     @Test
     public void stringValueStringArray_FalseVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("false", view.stringValue("12").orElseThrow());
+        assertEquals("false", view.stringValue("12").get());
     }
 
     @Test
@@ -854,79 +856,79 @@ public final class JsonMetadataViewTest {
     @Test
     public void stringValueIndexObject_StringVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("hello world", view.stringValue(13).orElseThrow());
+        assertEquals("hello world", view.stringValue(13).get());
     }
 
     @Test
     public void stringValueIndexObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Integer.MAX_VALUE), view.stringValue(11).orElseThrow());
+        assertEquals(String.valueOf(Integer.MAX_VALUE), view.stringValue(11).get());
     }
 
     @Test
     public void stringValueIndexObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Integer.MIN_VALUE), view.stringValue(5).orElseThrow());
+        assertEquals(String.valueOf(Integer.MIN_VALUE), view.stringValue(5).get());
     }
 
     @Test
     public void stringValueIndexObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Long.MAX_VALUE), view.stringValue(12).orElseThrow());
+        assertEquals(String.valueOf(Long.MAX_VALUE), view.stringValue(12).get());
     }
 
     @Test
     public void stringValueIndexObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Long.MIN_VALUE), view.stringValue(6).orElseThrow());
+        assertEquals(String.valueOf(Long.MIN_VALUE), view.stringValue(6).get());
     }
 
     @Test
     public void stringValueIndexObject_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("9223372036854775808", view.stringValue(10).orElseThrow());
+        assertEquals("9223372036854775808", view.stringValue(10).get());
     }
 
     @Test
     public void stringValueIndexObject_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("-9223372036854775809", view.stringValue(4).orElseThrow());
+        assertEquals("-9223372036854775809", view.stringValue(4).get());
     }
 
     @Test
     public void stringValueIndexObject_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Float.MAX_VALUE), view.stringValue(9).orElseThrow());
+        assertEquals(String.valueOf(Float.MAX_VALUE), view.stringValue(9).get());
     }
 
     @Test
     public void stringValueIndexObject_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(-Float.MAX_VALUE), view.stringValue(3).orElseThrow());
+        assertEquals(String.valueOf(-Float.MAX_VALUE), view.stringValue(3).get());
     }
 
     @Test
     public void stringValueIndexObject_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(Double.MAX_VALUE), view.stringValue(8).orElseThrow());
+        assertEquals(String.valueOf(Double.MAX_VALUE), view.stringValue(8).get());
     }
 
     @Test
     public void stringValueIndexObject_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(String.valueOf(-Double.MAX_VALUE), view.stringValue(2).orElseThrow());
+        assertEquals(String.valueOf(-Double.MAX_VALUE), view.stringValue(2).get());
     }
 
     @Test
     public void stringValueIndexObject_TrueVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("true", view.stringValue(14).orElseThrow());
+        assertEquals("true", view.stringValue(14).get());
     }
 
     @Test
     public void stringValueIndexObject_FalseVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals("false", view.stringValue(1).orElseThrow());
+        assertEquals("false", view.stringValue(1).get());
     }
 
     @Test
@@ -957,79 +959,79 @@ public final class JsonMetadataViewTest {
     @Test
     public void stringValueIndexArray_StringVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("hello world", view.stringValue(0).orElseThrow());
+        assertEquals("hello world", view.stringValue(0).get());
     }
 
     @Test
     public void stringValueIndexArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Integer.MAX_VALUE), view.stringValue(1).orElseThrow());
+        assertEquals(String.valueOf(Integer.MAX_VALUE), view.stringValue(1).get());
     }
 
     @Test
     public void stringValueIndexArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Integer.MIN_VALUE), view.stringValue(2).orElseThrow());
+        assertEquals(String.valueOf(Integer.MIN_VALUE), view.stringValue(2).get());
     }
 
     @Test
     public void stringValueIndexArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Long.MAX_VALUE), view.stringValue(3).orElseThrow());
+        assertEquals(String.valueOf(Long.MAX_VALUE), view.stringValue(3).get());
     }
 
     @Test
     public void stringValueIndexArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Long.MIN_VALUE), view.stringValue(4).orElseThrow());
+        assertEquals(String.valueOf(Long.MIN_VALUE), view.stringValue(4).get());
     }
 
     @Test
     public void stringValueIndexArray_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("9223372036854775808", view.stringValue(5).orElseThrow());
+        assertEquals("9223372036854775808", view.stringValue(5).get());
     }
 
     @Test
     public void stringValueIndexArray_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("-9223372036854775809", view.stringValue(6).orElseThrow());
+        assertEquals("-9223372036854775809", view.stringValue(6).get());
     }
 
     @Test
     public void stringValueIndexArray_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Float.MAX_VALUE), view.stringValue(7).orElseThrow());
+        assertEquals(String.valueOf(Float.MAX_VALUE), view.stringValue(7).get());
     }
 
     @Test
     public void stringValueIndexArray_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(-Float.MAX_VALUE), view.stringValue(8).orElseThrow());
+        assertEquals(String.valueOf(-Float.MAX_VALUE), view.stringValue(8).get());
     }
 
     @Test
     public void stringValueIndexArray_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(Double.MAX_VALUE), view.stringValue(9).orElseThrow());
+        assertEquals(String.valueOf(Double.MAX_VALUE), view.stringValue(9).get());
     }
 
     @Test
     public void stringValueIndexArray_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(String.valueOf(-Double.MAX_VALUE), view.stringValue(10).orElseThrow());
+        assertEquals(String.valueOf(-Double.MAX_VALUE), view.stringValue(10).get());
     }
 
     @Test
     public void stringValueIndexArray_TrueVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("true", view.stringValue(11).orElseThrow());
+        assertEquals("true", view.stringValue(11).get());
     }
 
     @Test
     public void stringValueIndexArray_FalseVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals("false", view.stringValue(12).orElseThrow());
+        assertEquals("false", view.stringValue(12).get());
     }
 
     @Test
@@ -1071,13 +1073,13 @@ public final class JsonMetadataViewTest {
     @Test
     public void integerValueStringObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MAX_VALUE, (int) view.integerValue("pos int val0").orElseThrow());
+        assertEquals(Integer.MAX_VALUE, (int) view.integerValue("pos int val0").get());
     }
 
     @Test
     public void integerValueStringObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MIN_VALUE, (int) view.integerValue("neg int val0").orElseThrow());
+        assertEquals(Integer.MIN_VALUE, (int) view.integerValue("neg int val0").get());
     }
 
     @Test
@@ -1185,13 +1187,13 @@ public final class JsonMetadataViewTest {
     @Test
     public void integerValueStringArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MAX_VALUE, (int) view.integerValue("1").orElseThrow());
+        assertEquals(Integer.MAX_VALUE, (int) view.integerValue("1").get());
     }
 
     @Test
     public void integerValueStringArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MIN_VALUE, (int) view.integerValue("2").orElseThrow());
+        assertEquals(Integer.MIN_VALUE, (int) view.integerValue("2").get());
     }
 
     @Test
@@ -1275,13 +1277,13 @@ public final class JsonMetadataViewTest {
     @Test
     public void integerValueIndexObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MAX_VALUE, (int) view.integerValue(11).orElseThrow());
+        assertEquals(Integer.MAX_VALUE, (int) view.integerValue(11).get());
     }
 
     @Test
     public void integerValueIndexObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MIN_VALUE, (int) view.integerValue(5).orElseThrow());
+        assertEquals(Integer.MIN_VALUE, (int) view.integerValue(5).get());
     }
 
     @Test
@@ -1378,13 +1380,13 @@ public final class JsonMetadataViewTest {
     @Test
     public void integerValueIndexArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MAX_VALUE, (int) view.integerValue(1).orElseThrow());
+        assertEquals(Integer.MAX_VALUE, (int) view.integerValue(1).get());
     }
 
     @Test
     public void integerValueIndexArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MIN_VALUE, (int) view.integerValue(2).orElseThrow());
+        assertEquals(Integer.MIN_VALUE, (int) view.integerValue(2).get());
     }
 
     @Test
@@ -1486,25 +1488,25 @@ public final class JsonMetadataViewTest {
     @Test
     public void longValueStringObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MAX_VALUE, (long) view.longValue("pos int val0").orElseThrow());
+        assertEquals(Integer.MAX_VALUE, (long) view.longValue("pos int val0").get());
     }
 
     @Test
     public void longValueStringObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MIN_VALUE, (long) view.longValue("neg int val0").orElseThrow());
+        assertEquals(Integer.MIN_VALUE, (long) view.longValue("neg int val0").get());
     }
 
     @Test
     public void longValueStringObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Long.MAX_VALUE, (long) view.longValue("pos long val0").orElseThrow());
+        assertEquals(Long.MAX_VALUE, (long) view.longValue("pos long val0").get());
     }
 
     @Test
     public void longValueStringObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Long.MIN_VALUE, (long) view.longValue("neg long val0").orElseThrow());
+        assertEquals(Long.MIN_VALUE, (long) view.longValue("neg long val0").get());
     }
 
     @Test
@@ -1600,25 +1602,25 @@ public final class JsonMetadataViewTest {
     @Test
     public void longValueStringArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MAX_VALUE, (long) view.longValue("1").orElseThrow());
+        assertEquals(Integer.MAX_VALUE, (long) view.longValue("1").get());
     }
 
     @Test
     public void longValueStringArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MIN_VALUE, (long) view.longValue("2").orElseThrow());
+        assertEquals(Integer.MIN_VALUE, (long) view.longValue("2").get());
     }
 
     @Test
     public void longValueStringArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Long.MAX_VALUE, (long) view.longValue("3").orElseThrow());
+        assertEquals(Long.MAX_VALUE, (long) view.longValue("3").get());
     }
 
     @Test
     public void longValueStringArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Long.MIN_VALUE, (long) view.longValue("4").orElseThrow());
+        assertEquals(Long.MIN_VALUE, (long) view.longValue("4").get());
     }
 
     @Test
@@ -1690,25 +1692,25 @@ public final class JsonMetadataViewTest {
     @Test
     public void longValueIndexObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MAX_VALUE, (long) view.longValue(11).orElseThrow());
+        assertEquals(Integer.MAX_VALUE, (long) view.longValue(11).get());
     }
 
     @Test
     public void longValueIndexObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MIN_VALUE, (long) view.longValue(5).orElseThrow());
+        assertEquals(Integer.MIN_VALUE, (long) view.longValue(5).get());
     }
 
     @Test
     public void longValueIndexObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Long.MAX_VALUE, (long) view.longValue(12).orElseThrow());
+        assertEquals(Long.MAX_VALUE, (long) view.longValue(12).get());
     }
 
     @Test
     public void longValueIndexObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Long.MIN_VALUE, (long) view.longValue(6).orElseThrow());
+        assertEquals(Long.MIN_VALUE, (long) view.longValue(6).get());
     }
 
     @Test
@@ -1793,25 +1795,25 @@ public final class JsonMetadataViewTest {
     @Test
     public void longValueIndexArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MAX_VALUE, (long) view.longValue(1).orElseThrow());
+        assertEquals(Integer.MAX_VALUE, (long) view.longValue(1).get());
     }
 
     @Test
     public void longValueIndexArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MIN_VALUE, (long) view.longValue(2).orElseThrow());
+        assertEquals(Integer.MIN_VALUE, (long) view.longValue(2).get());
     }
 
     @Test
     public void longValueIndexArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Long.MAX_VALUE, (long) view.longValue(3).orElseThrow());
+        assertEquals(Long.MAX_VALUE, (long) view.longValue(3).get());
     }
 
     @Test
     public void longValueIndexArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Long.MIN_VALUE, (long) view.longValue(4).orElseThrow());
+        assertEquals(Long.MIN_VALUE, (long) view.longValue(4).get());
     }
 
     @Test
@@ -1901,49 +1903,49 @@ public final class JsonMetadataViewTest {
     @Test
     public void floatValueStringObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals((float) Integer.MAX_VALUE, view.floatValue("pos int val0").orElseThrow(), 0.000001);
+        assertEquals((float) Integer.MAX_VALUE, view.floatValue("pos int val0").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals((float) Integer.MIN_VALUE, view.floatValue("neg int val0").orElseThrow(), 0.000001);
+        assertEquals((float) Integer.MIN_VALUE, view.floatValue("neg int val0").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals((float) Long.MAX_VALUE, view.floatValue("pos long val0").orElseThrow(), 0.000001);
+        assertEquals((float) Long.MAX_VALUE, view.floatValue("pos long val0").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals((float) Long.MIN_VALUE, view.floatValue("neg long val0").orElseThrow(), 0.000001);
+        assertEquals((float) Long.MIN_VALUE, view.floatValue("neg long val0").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringObject_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(9223372036854775808f, view.floatValue("pos int >64-bits val0").orElseThrow(), 0.000001);
+        assertEquals(9223372036854775808f, view.floatValue("pos int >64-bits val0").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringObject_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-9223372036854775809f, view.floatValue("neg int >64-bits val0").orElseThrow(), 0.000001);
+        assertEquals(-9223372036854775809f, view.floatValue("neg int >64-bits val0").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringObject_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Float.MAX_VALUE, view.floatValue("pos float val0").orElseThrow(), 0.000001);
+        assertEquals(Float.MAX_VALUE, view.floatValue("pos float val0").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringObject_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-Float.MAX_VALUE, view.floatValue("neg float val0").orElseThrow(), 0.000001);
+        assertEquals(-Float.MAX_VALUE, view.floatValue("neg float val0").get(), 0.000001);
     }
 
     @Test
@@ -2015,49 +2017,49 @@ public final class JsonMetadataViewTest {
     @Test
     public void floatValueStringArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals((float) Integer.MAX_VALUE, view.floatValue("1").orElseThrow(), 0.000001);
+        assertEquals((float) Integer.MAX_VALUE, view.floatValue("1").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals((float) Integer.MIN_VALUE, view.floatValue("2").orElseThrow(), 0.000001);
+        assertEquals((float) Integer.MIN_VALUE, view.floatValue("2").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals((float) Long.MAX_VALUE, view.floatValue("3").orElseThrow(), 0.000001);
+        assertEquals((float) Long.MAX_VALUE, view.floatValue("3").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals((float) Long.MIN_VALUE, view.floatValue("4").orElseThrow(), 0.000001);
+        assertEquals((float) Long.MIN_VALUE, view.floatValue("4").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringArray_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(9223372036854775808f, view.floatValue("5").orElseThrow(), 0.000001);
+        assertEquals(9223372036854775808f, view.floatValue("5").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringArray_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-9223372036854775809f, view.floatValue("6").orElseThrow(), 0.000001);
+        assertEquals(-9223372036854775809f, view.floatValue("6").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringArray_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Float.MAX_VALUE, view.floatValue("7").orElseThrow(), 0.000001);
+        assertEquals(Float.MAX_VALUE, view.floatValue("7").get(), 0.000001);
     }
 
     @Test
     public void floatValueStringArray_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-Float.MAX_VALUE, view.floatValue("8").orElseThrow(), 0.000001);
+        assertEquals(-Float.MAX_VALUE, view.floatValue("8").get(), 0.000001);
     }
 
     @Test
@@ -2105,49 +2107,49 @@ public final class JsonMetadataViewTest {
     @Test
     public void floatValueIndexObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals((float) Integer.MAX_VALUE, view.floatValue(11).orElseThrow(), 0.000001);
+        assertEquals((float) Integer.MAX_VALUE, view.floatValue(11).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals((float) Integer.MIN_VALUE, view.floatValue(5).orElseThrow(), 0.000001);
+        assertEquals((float) Integer.MIN_VALUE, view.floatValue(5).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals((float) Long.MAX_VALUE, view.floatValue(12).orElseThrow(), 0.000001);
+        assertEquals((float) Long.MAX_VALUE, view.floatValue(12).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals((float) Long.MIN_VALUE, view.floatValue(6).orElseThrow(), 0.000001);
+        assertEquals((float) Long.MIN_VALUE, view.floatValue(6).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexObject_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(9223372036854775808f, view.floatValue(10).orElseThrow(), 0.000001);
+        assertEquals(9223372036854775808f, view.floatValue(10).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexObject_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-9223372036854775809f, view.floatValue(4).orElseThrow(), 0.000001);
+        assertEquals(-9223372036854775809f, view.floatValue(4).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexObject_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Float.MAX_VALUE, view.floatValue(9).orElseThrow(), 0.000001);
+        assertEquals(Float.MAX_VALUE, view.floatValue(9).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexObject_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-Float.MAX_VALUE, view.floatValue(3).orElseThrow(), 0.000001);
+        assertEquals(-Float.MAX_VALUE, view.floatValue(3).get(), 0.000001);
     }
 
     @Test
@@ -2208,49 +2210,49 @@ public final class JsonMetadataViewTest {
     @Test
     public void floatValueIndexArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals((float) Integer.MAX_VALUE, view.floatValue(1).orElseThrow(), 0.000001);
+        assertEquals((float) Integer.MAX_VALUE, view.floatValue(1).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals((float) Integer.MIN_VALUE, view.floatValue(2).orElseThrow(), 0.000001);
+        assertEquals((float) Integer.MIN_VALUE, view.floatValue(2).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals((float) Long.MAX_VALUE, view.floatValue(3).orElseThrow(), 0.000001);
+        assertEquals((float) Long.MAX_VALUE, view.floatValue(3).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals((float) Long.MIN_VALUE, view.floatValue(4).orElseThrow(), 0.000001);
+        assertEquals((float) Long.MIN_VALUE, view.floatValue(4).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexArray_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(9223372036854775808f, view.floatValue(5).orElseThrow(), 0.000001);
+        assertEquals(9223372036854775808f, view.floatValue(5).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexArray_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-9223372036854775809f, view.floatValue(6).orElseThrow(), 0.000001);
+        assertEquals(-9223372036854775809f, view.floatValue(6).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexArray_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Float.MAX_VALUE, view.floatValue(7).orElseThrow(), 0.000001);
+        assertEquals(Float.MAX_VALUE, view.floatValue(7).get(), 0.000001);
     }
 
     @Test
     public void floatValueIndexArray_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-Float.MAX_VALUE, view.floatValue(8).orElseThrow(), 0.000001);
+        assertEquals(-Float.MAX_VALUE, view.floatValue(8).get(), 0.000001);
     }
 
     @Test
@@ -2316,61 +2318,61 @@ public final class JsonMetadataViewTest {
     @Test
     public void doubleValueStringObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MAX_VALUE, view.doubleValue("pos int val0").orElseThrow(), 0.000001);
+        assertEquals(Integer.MAX_VALUE, view.doubleValue("pos int val0").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MIN_VALUE, view.doubleValue("neg int val0").orElseThrow(), 0.000001);
+        assertEquals(Integer.MIN_VALUE, view.doubleValue("neg int val0").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Long.MAX_VALUE, view.doubleValue("pos long val0").orElseThrow(), 0.000001);
+        assertEquals(Long.MAX_VALUE, view.doubleValue("pos long val0").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Long.MIN_VALUE, view.doubleValue("neg long val0").orElseThrow(), 0.000001);
+        assertEquals(Long.MIN_VALUE, view.doubleValue("neg long val0").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringObject_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(9223372036854775808d, view.doubleValue("pos int >64-bits val0").orElseThrow(), 0.000001);
+        assertEquals(9223372036854775808d, view.doubleValue("pos int >64-bits val0").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringObject_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-9223372036854775809d, view.doubleValue("neg int >64-bits val0").orElseThrow(), 0.000001);
+        assertEquals(-9223372036854775809d, view.doubleValue("neg int >64-bits val0").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringObject_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Float.MAX_VALUE, view.doubleValue("pos float val0").orElseThrow(), 0.000001);
+        assertEquals(Float.MAX_VALUE, view.doubleValue("pos float val0").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringObject_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-Float.MAX_VALUE, view.doubleValue("neg float val0").orElseThrow(), 0.000001);
+        assertEquals(-Float.MAX_VALUE, view.doubleValue("neg float val0").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringObject_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Double.MAX_VALUE, view.doubleValue("pos double val0").orElseThrow(), 0.000001);
+        assertEquals(Double.MAX_VALUE, view.doubleValue("pos double val0").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringObject_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-Double.MAX_VALUE, view.doubleValue("neg double val0").orElseThrow(), 0.000001);
+        assertEquals(-Double.MAX_VALUE, view.doubleValue("neg double val0").get(), 0.000001);
     }
 
     @Test
@@ -2430,61 +2432,61 @@ public final class JsonMetadataViewTest {
     @Test
     public void doubleValueStringArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MAX_VALUE, view.doubleValue("1").orElseThrow(), 0.000001);
+        assertEquals(Integer.MAX_VALUE, view.doubleValue("1").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MIN_VALUE, view.doubleValue("2").orElseThrow(), 0.000001);
+        assertEquals(Integer.MIN_VALUE, view.doubleValue("2").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Long.MAX_VALUE, view.doubleValue("3").orElseThrow(), 0.000001);
+        assertEquals(Long.MAX_VALUE, view.doubleValue("3").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Long.MIN_VALUE, view.doubleValue("4").orElseThrow(), 0.000001);
+        assertEquals(Long.MIN_VALUE, view.doubleValue("4").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringArray_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(9223372036854775808d, view.doubleValue("5").orElseThrow(), 0.000001);
+        assertEquals(9223372036854775808d, view.doubleValue("5").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringArray_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-9223372036854775809d, view.doubleValue("6").orElseThrow(), 0.000001);
+        assertEquals(-9223372036854775809d, view.doubleValue("6").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringArray_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Float.MAX_VALUE, view.doubleValue("7").orElseThrow(), 0.000001);
+        assertEquals(Float.MAX_VALUE, view.doubleValue("7").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringArray_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-Float.MAX_VALUE, view.doubleValue("8").orElseThrow(), 0.000001);
+        assertEquals(-Float.MAX_VALUE, view.doubleValue("8").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringArray_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Double.MAX_VALUE, view.doubleValue("9").orElseThrow(), 0.000001);
+        assertEquals(Double.MAX_VALUE, view.doubleValue("9").get(), 0.000001);
     }
 
     @Test
     public void doubleValueStringArray_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-Double.MAX_VALUE, view.doubleValue("10").orElseThrow(), 0.000001);
+        assertEquals(-Double.MAX_VALUE, view.doubleValue("10").get(), 0.000001);
     }
 
     @Test
@@ -2520,61 +2522,61 @@ public final class JsonMetadataViewTest {
     @Test
     public void doubleValueIndexObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MAX_VALUE, view.doubleValue(11).orElseThrow(), 0.000001);
+        assertEquals(Integer.MAX_VALUE, view.doubleValue(11).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Integer.MIN_VALUE, view.doubleValue(5).orElseThrow(), 0.000001);
+        assertEquals(Integer.MIN_VALUE, view.doubleValue(5).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Long.MAX_VALUE, view.doubleValue(12).orElseThrow(), 0.000001);
+        assertEquals(Long.MAX_VALUE, view.doubleValue(12).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Long.MIN_VALUE, view.doubleValue(6).orElseThrow(), 0.000001);
+        assertEquals(Long.MIN_VALUE, view.doubleValue(6).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexObject_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(9223372036854775808d, view.doubleValue(10).orElseThrow(), 0.000001);
+        assertEquals(9223372036854775808d, view.doubleValue(10).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexObject_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-9223372036854775809d, view.doubleValue(4).orElseThrow(), 0.000001);
+        assertEquals(-9223372036854775809d, view.doubleValue(4).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexObject_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Float.MAX_VALUE, view.doubleValue(9).orElseThrow(), 0.000001);
+        assertEquals(Float.MAX_VALUE, view.doubleValue(9).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexObject_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-Float.MAX_VALUE, view.doubleValue(3).orElseThrow(), 0.000001);
+        assertEquals(-Float.MAX_VALUE, view.doubleValue(3).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexObject_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(Double.MAX_VALUE, view.doubleValue(8).orElseThrow(), 0.000001);
+        assertEquals(Double.MAX_VALUE, view.doubleValue(8).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexObject_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertEquals(-Double.MAX_VALUE, view.doubleValue(2).orElseThrow(), 0.000001);
+        assertEquals(-Double.MAX_VALUE, view.doubleValue(2).get(), 0.000001);
     }
 
     @Test
@@ -2623,61 +2625,61 @@ public final class JsonMetadataViewTest {
     @Test
     public void doubleValueIndexArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MAX_VALUE, view.doubleValue(1).orElseThrow(), 0.000001);
+        assertEquals(Integer.MAX_VALUE, view.doubleValue(1).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Integer.MIN_VALUE, view.doubleValue(2).orElseThrow(), 0.000001);
+        assertEquals(Integer.MIN_VALUE, view.doubleValue(2).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Long.MAX_VALUE, view.doubleValue(3).orElseThrow(), 0.000001);
+        assertEquals(Long.MAX_VALUE, view.doubleValue(3).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Long.MIN_VALUE, view.doubleValue(4).orElseThrow(), 0.000001);
+        assertEquals(Long.MIN_VALUE, view.doubleValue(4).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexArray_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(9223372036854775808d, view.doubleValue(5).orElseThrow(), 0.000001);
+        assertEquals(9223372036854775808d, view.doubleValue(5).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexArray_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-9223372036854775809d, view.doubleValue(6).orElseThrow(), 0.000001);
+        assertEquals(-9223372036854775809d, view.doubleValue(6).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexArray_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Float.MAX_VALUE, view.doubleValue(7).orElseThrow(), 0.000001);
+        assertEquals(Float.MAX_VALUE, view.doubleValue(7).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexArray_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-Float.MAX_VALUE, view.doubleValue(8).orElseThrow(), 0.000001);
+        assertEquals(-Float.MAX_VALUE, view.doubleValue(8).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexArray_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(Double.MAX_VALUE, view.doubleValue(9).orElseThrow(), 0.000001);
+        assertEquals(Double.MAX_VALUE, view.doubleValue(9).get(), 0.000001);
     }
 
     @Test
     public void doubleValueIndexArray_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertEquals(-Double.MAX_VALUE, view.doubleValue(10).orElseThrow(), 0.000001);
+        assertEquals(-Double.MAX_VALUE, view.doubleValue(10).get(), 0.000001);
     }
 
     @Test
@@ -2725,79 +2727,79 @@ public final class JsonMetadataViewTest {
     @Test
     public void booleanValueStringObject_StringVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("string val0").orElseThrow());
+        assertFalse(view.booleanValue("string val0").get());
     }
 
     @Test
     public void booleanValueStringObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("pos int val0").orElseThrow());
+        assertFalse(view.booleanValue("pos int val0").get());
     }
 
     @Test
     public void booleanValueStringObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("neg int val0").orElseThrow());
+        assertFalse(view.booleanValue("neg int val0").get());
     }
 
     @Test
     public void booleanValueStringObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("pos long val0").orElseThrow());
+        assertFalse(view.booleanValue("pos long val0").get());
     }
 
     @Test
     public void booleanValueStringObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("neg long val0").orElseThrow());
+        assertFalse(view.booleanValue("neg long val0").get());
     }
 
     @Test
     public void booleanValueStringObject_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("pos int >64-bits val0").orElseThrow());
+        assertFalse(view.booleanValue("pos int >64-bits val0").get());
     }
 
     @Test
     public void booleanValueStringObject_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("neg int >64-bits val0").orElseThrow());
+        assertFalse(view.booleanValue("neg int >64-bits val0").get());
     }
 
     @Test
     public void booleanValueStringObject_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("pos float val0").orElseThrow());
+        assertFalse(view.booleanValue("pos float val0").get());
     }
 
     @Test
     public void booleanValueStringObject_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("neg float val0").orElseThrow());
+        assertFalse(view.booleanValue("neg float val0").get());
     }
 
     @Test
     public void booleanValueStringObject_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("pos double val0").orElseThrow());
+        assertFalse(view.booleanValue("pos double val0").get());
     }
 
     @Test
     public void booleanValueStringObject_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("neg double val0").orElseThrow());
+        assertFalse(view.booleanValue("neg double val0").get());
     }
 
     @Test
     public void booleanValueStringObject_TrueVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertTrue(view.booleanValue("true val0").orElseThrow());
+        assertTrue(view.booleanValue("true val0").get());
     }
 
     @Test
     public void booleanValueStringObject_FalseVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue("false val0").orElseThrow());
+        assertFalse(view.booleanValue("false val0").get());
     }
 
     @Test
@@ -2839,79 +2841,79 @@ public final class JsonMetadataViewTest {
     @Test
     public void booleanValueStringArray_StringVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("0").orElseThrow());
+        assertFalse(view.booleanValue("0").get());
     }
 
     @Test
     public void booleanValueStringArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("1").orElseThrow());
+        assertFalse(view.booleanValue("1").get());
     }
 
     @Test
     public void booleanValueStringArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("2").orElseThrow());
+        assertFalse(view.booleanValue("2").get());
     }
 
     @Test
     public void booleanValueStringArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("3").orElseThrow());
+        assertFalse(view.booleanValue("3").get());
     }
 
     @Test
     public void booleanValueStringArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("4").orElseThrow());
+        assertFalse(view.booleanValue("4").get());
     }
 
     @Test
     public void booleanValueStringArray_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("5").orElseThrow());
+        assertFalse(view.booleanValue("5").get());
     }
 
     @Test
     public void booleanValueStringArray_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("6").orElseThrow());
+        assertFalse(view.booleanValue("6").get());
     }
 
     @Test
     public void booleanValueStringArray_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("7").orElseThrow());
+        assertFalse(view.booleanValue("7").get());
     }
 
     @Test
     public void booleanValueStringArray_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("8").orElseThrow());
+        assertFalse(view.booleanValue("8").get());
     }
 
     @Test
     public void booleanValueStringArray_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("9").orElseThrow());
+        assertFalse(view.booleanValue("9").get());
     }
 
     @Test
     public void booleanValueStringArray_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("10").orElseThrow());
+        assertFalse(view.booleanValue("10").get());
     }
 
     @Test
     public void booleanValueStringArray_TrueVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertTrue(view.booleanValue("11").orElseThrow());
+        assertTrue(view.booleanValue("11").get());
     }
 
     @Test
     public void booleanValueStringArray_FalseVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue("12").orElseThrow());
+        assertFalse(view.booleanValue("12").get());
     }
 
     @Test
@@ -2929,79 +2931,79 @@ public final class JsonMetadataViewTest {
     @Test
     public void booleanValueIndexObject_StringVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(13).orElseThrow());
+        assertFalse(view.booleanValue(13).get());
     }
 
     @Test
     public void booleanValueIndexObject_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(11).orElseThrow());
+        assertFalse(view.booleanValue(11).get());
     }
 
     @Test
     public void booleanValueIndexObject_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(5).orElseThrow());
+        assertFalse(view.booleanValue(5).get());
     }
 
     @Test
     public void booleanValueIndexObject_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(12).orElseThrow());
+        assertFalse(view.booleanValue(12).get());
     }
 
     @Test
     public void booleanValueIndexObject_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(6).orElseThrow());
+        assertFalse(view.booleanValue(6).get());
     }
 
     @Test
     public void booleanValueIndexObject_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(10).orElseThrow());
+        assertFalse(view.booleanValue(10).get());
     }
 
     @Test
     public void booleanValueIndexObject_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(4).orElseThrow());
+        assertFalse(view.booleanValue(4).get());
     }
 
     @Test
     public void booleanValueIndexObject_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(9).orElseThrow());
+        assertFalse(view.booleanValue(9).get());
     }
 
     @Test
     public void booleanValueIndexObject_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(3).orElseThrow());
+        assertFalse(view.booleanValue(3).get());
     }
 
     @Test
     public void booleanValueIndexObject_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(8).orElseThrow());
+        assertFalse(view.booleanValue(8).get());
     }
 
     @Test
     public void booleanValueIndexObject_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(2).orElseThrow());
+        assertFalse(view.booleanValue(2).get());
     }
 
     @Test
     public void booleanValueIndexObject_TrueVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertTrue(view.booleanValue(14).orElseThrow());
+        assertTrue(view.booleanValue(14).get());
     }
 
     @Test
     public void booleanValueIndexObject_FalseVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
-        assertFalse(view.booleanValue(1).orElseThrow());
+        assertFalse(view.booleanValue(1).get());
     }
 
     @Test
@@ -3032,79 +3034,79 @@ public final class JsonMetadataViewTest {
     @Test
     public void booleanValueIndexArray_StringVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(0).orElseThrow());
+        assertFalse(view.booleanValue(0).get());
     }
 
     @Test
     public void booleanValueIndexArray_PosIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(1).orElseThrow());
+        assertFalse(view.booleanValue(1).get());
     }
 
     @Test
     public void booleanValueIndexArray_NegIntVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(2).orElseThrow());
+        assertFalse(view.booleanValue(2).get());
     }
 
     @Test
     public void booleanValueIndexArray_PosLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(3).orElseThrow());
+        assertFalse(view.booleanValue(3).get());
     }
 
     @Test
     public void booleanValueIndexArray_NegLongVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(4).orElseThrow());
+        assertFalse(view.booleanValue(4).get());
     }
 
     @Test
     public void booleanValueIndexArray_PosBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(5).orElseThrow());
+        assertFalse(view.booleanValue(5).get());
     }
 
     @Test
     public void booleanValueIndexArray_NegBeyond64BitsVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(6).orElseThrow());
+        assertFalse(view.booleanValue(6).get());
     }
 
     @Test
     public void booleanValueIndexArray_PosFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(7).orElseThrow());
+        assertFalse(view.booleanValue(7).get());
     }
 
     @Test
     public void booleanValueIndexArray_NegFloatVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(8).orElseThrow());
+        assertFalse(view.booleanValue(8).get());
     }
 
     @Test
     public void booleanValueIndexArray_PosDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(9).orElseThrow());
+        assertFalse(view.booleanValue(9).get());
     }
 
     @Test
     public void booleanValueIndexArray_NegDoubleVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(10).orElseThrow());
+        assertFalse(view.booleanValue(10).get());
     }
 
     @Test
     public void booleanValueIndexArray_TrueVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertTrue(view.booleanValue(11).orElseThrow());
+        assertTrue(view.booleanValue(11).get());
     }
 
     @Test
     public void booleanValueIndexArray_FalseVal_ValueFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
-        assertFalse(view.booleanValue(12).orElseThrow());
+        assertFalse(view.booleanValue(12).get());
     }
 
     @Test
@@ -3126,9 +3128,9 @@ public final class JsonMetadataViewTest {
         root.add("uppercase", new JsonPrimitive("TRUE"));
         root.add("mixed case", new JsonPrimitive("TrUe"));
         JsonMetadataView view = new JsonMetadataView(root, String::compareTo);
-        assertTrue(view.booleanValue("lowercase").orElseThrow());
-        assertTrue(view.booleanValue("uppercase").orElseThrow());
-        assertTrue(view.booleanValue("mixed case").orElseThrow());
+        assertTrue(view.booleanValue("lowercase").get());
+        assertTrue(view.booleanValue("uppercase").get());
+        assertTrue(view.booleanValue("mixed case").get());
     }
 
     @Test
@@ -3138,9 +3140,9 @@ public final class JsonMetadataViewTest {
         root.add(new JsonPrimitive("TRUE"));
         root.add(new JsonPrimitive("TrUe"));
         JsonMetadataView view = new JsonMetadataView(root);
-        assertTrue(view.booleanValue("0").orElseThrow());
-        assertTrue(view.booleanValue("1").orElseThrow());
-        assertTrue(view.booleanValue("2").orElseThrow());
+        assertTrue(view.booleanValue("0").get());
+        assertTrue(view.booleanValue("1").get());
+        assertTrue(view.booleanValue("2").get());
     }
 
     @Test
@@ -3150,9 +3152,9 @@ public final class JsonMetadataViewTest {
         root.add("uppercase", new JsonPrimitive("TRUE"));
         root.add("mixed case", new JsonPrimitive("TrUe"));
         JsonMetadataView view = new JsonMetadataView(root, String::compareTo);
-        assertTrue(view.booleanValue(0).orElseThrow());
-        assertTrue(view.booleanValue(2).orElseThrow());
-        assertTrue(view.booleanValue(1).orElseThrow());
+        assertTrue(view.booleanValue(0).get());
+        assertTrue(view.booleanValue(2).get());
+        assertTrue(view.booleanValue(1).get());
     }
 
     @Test
@@ -3162,9 +3164,9 @@ public final class JsonMetadataViewTest {
         root.add(new JsonPrimitive("TRUE"));
         root.add(new JsonPrimitive("TrUe"));
         JsonMetadataView view = new JsonMetadataView(root);
-        assertTrue(view.booleanValue(0).orElseThrow());
-        assertTrue(view.booleanValue(1).orElseThrow());
-        assertTrue(view.booleanValue(2).orElseThrow());
+        assertTrue(view.booleanValue(0).get());
+        assertTrue(view.booleanValue(1).get());
+        assertTrue(view.booleanValue(2).get());
     }
     @Test
     public void subViewStringObject_KeyNotPresent_Empty() {
@@ -3266,10 +3268,10 @@ public final class JsonMetadataViewTest {
     public void subViewStringObject_ObjectVal_ViewFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
         assertEquals(
-                Set.of("string val1", "pos int val1", "neg int val1", "pos long val1", "neg long val1",
+                ImmutableSet.of("string val1", "pos int val1", "neg int val1", "pos long val1", "neg long val1",
                         "pos int >64-bits val1", "neg int >64-bits val1", "pos float val1", "neg float val1",
                         "pos double val1", "neg double val1", "true val1", "false val1", "object val1", "array val1"),
-                new HashSet<>(collectKeys(view.subView("object val0").orElseThrow().keys()))
+                new HashSet<>(collectKeys(view.subView("object val0").get().keys()))
         );
     }
 
@@ -3278,7 +3280,7 @@ public final class JsonMetadataViewTest {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
         assertEquals(
                 IntStream.rangeClosed(0, 14).mapToObj(String::valueOf).collect(Collectors.toSet()),
-                new HashSet<>(collectKeys(view.subView("array val0").orElseThrow().keys()))
+                new HashSet<>(collectKeys(view.subView("array val0").get().keys()))
         );
     }
 
@@ -3388,10 +3390,10 @@ public final class JsonMetadataViewTest {
     public void subViewStringArray_ObjectVal_ViewFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
         assertEquals(
-                Set.of("string val1", "pos int val1", "neg int val1", "pos long val1", "neg long val1",
+                ImmutableSet.of("string val1", "pos int val1", "neg int val1", "pos long val1", "neg long val1",
                         "pos int >64-bits val1", "neg int >64-bits val1", "pos float val1", "neg float val1",
                         "pos double val1", "neg double val1", "true val1", "false val1", "object val1", "array val1"),
-                new HashSet<>(collectKeys(view.subView("13").orElseThrow().keys()))
+                new HashSet<>(collectKeys(view.subView("13").get().keys()))
         );
     }
 
@@ -3400,7 +3402,7 @@ public final class JsonMetadataViewTest {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
         assertEquals(
                 IntStream.rangeClosed(0, 14).mapToObj(String::valueOf).collect(Collectors.toSet()),
-                new HashSet<>(collectKeys(view.subView("14").orElseThrow().keys()))
+                new HashSet<>(collectKeys(view.subView("14").get().keys()))
         );
     }
 
@@ -3486,10 +3488,10 @@ public final class JsonMetadataViewTest {
     public void subViewIndexObject_ObjectVal_ViewFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
         assertEquals(
-                Set.of("string val1", "pos int val1", "neg int val1", "pos long val1", "neg long val1",
+                ImmutableSet.of("string val1", "pos int val1", "neg int val1", "pos long val1", "neg long val1",
                         "pos int >64-bits val1", "neg int >64-bits val1", "pos float val1", "neg float val1",
                         "pos double val1", "neg double val1", "true val1", "false val1", "object val1", "array val1"),
-                new HashSet<>(collectKeys(view.subView(7).orElseThrow().keys()))
+                new HashSet<>(collectKeys(view.subView(7).get().keys()))
         );
     }
 
@@ -3498,7 +3500,7 @@ public final class JsonMetadataViewTest {
         JsonMetadataView view = new JsonMetadataView(makeDemoObject(), String::compareTo);
         assertEquals(
                 IntStream.rangeClosed(0, 14).mapToObj(String::valueOf).collect(Collectors.toSet()),
-                new HashSet<>(collectKeys(view.subView(0).orElseThrow().keys()))
+                new HashSet<>(collectKeys(view.subView(0).get().keys()))
         );
     }
 
@@ -3597,10 +3599,10 @@ public final class JsonMetadataViewTest {
     public void subViewIndexArray_ObjectVal_ViewFound() {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
         assertEquals(
-                Set.of("string val1", "pos int val1", "neg int val1", "pos long val1", "neg long val1",
+                ImmutableSet.of("string val1", "pos int val1", "neg int val1", "pos long val1", "neg long val1",
                         "pos int >64-bits val1", "neg int >64-bits val1", "pos float val1", "neg float val1",
                         "pos double val1", "neg double val1", "true val1", "false val1", "object val1", "array val1"),
-                new HashSet<>(collectKeys(view.subView(13).orElseThrow().keys()))
+                new HashSet<>(collectKeys(view.subView(13).get().keys()))
         );
     }
 
@@ -3609,7 +3611,7 @@ public final class JsonMetadataViewTest {
         JsonMetadataView view = new JsonMetadataView(makeDemoArray());
         assertEquals(
                 IntStream.rangeClosed(0, 14).mapToObj(String::valueOf).collect(Collectors.toSet()),
-                new HashSet<>(collectKeys(view.subView(14).orElseThrow().keys()))
+                new HashSet<>(collectKeys(view.subView(14).get().keys()))
         );
     }
 

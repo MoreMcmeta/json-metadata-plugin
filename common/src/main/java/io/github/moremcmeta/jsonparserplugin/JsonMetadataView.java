@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.util.Objects.requireNonNull;
@@ -55,7 +56,7 @@ public final class JsonMetadataView implements MetadataView {
         requireNonNull(keyComparator, "Key comparator cannot be null");
         KEYS = root.entrySet().stream().map(Map.Entry::getKey)
                 .filter((key) -> !root.get(key).isJsonNull())
-                .sorted(keyComparator).toList();
+                .sorted(keyComparator).collect(Collectors.toList());
         SIZE = KEYS.size();
     }
 
@@ -74,7 +75,7 @@ public final class JsonMetadataView implements MetadataView {
         }
 
         SIZE = root.size();
-        KEYS = IntStream.range(0, SIZE).mapToObj(String::valueOf).toList();
+        KEYS = IntStream.range(0, SIZE).mapToObj(String::valueOf).collect(Collectors.toList());
     }
 
     @Override

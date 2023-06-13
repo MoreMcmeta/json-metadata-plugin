@@ -17,6 +17,7 @@
 
 package io.github.moremcmeta.jsonparserplugin;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.InvalidMetadataException;
@@ -68,7 +69,7 @@ public final class JsonMetadataParser implements MetadataParser {
             IOUtils.closeQuietly(bufferedReader);
         }
 
-        return Map.of(textureLocation, metadata);
+        return ImmutableMap.of(textureLocation, metadata);
     }
 
     /**
@@ -87,9 +88,10 @@ public final class JsonMetadataParser implements MetadataParser {
      *         integer if section2 precedes section1, or zero if they are
      *         the same
      */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     private int compareSections(MetadataView root, String section1, String section2) {
-        MetadataView view1 = root.subView(section1).orElseThrow();
-        MetadataView view2 = root.subView(section2).orElseThrow();
+        MetadataView view1 = root.subView(section1).get();
+        MetadataView view2 = root.subView(section2).get();
 
         final String PRIORITY_KEY = "layer";
         int layerDiff = view1.integerValue(PRIORITY_KEY).orElse(0) - view2.integerValue(PRIORITY_KEY).orElse(0);
