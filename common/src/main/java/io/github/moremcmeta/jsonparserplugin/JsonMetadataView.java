@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -52,7 +53,9 @@ public final class JsonMetadataView implements MetadataView {
     public JsonMetadataView(JsonObject root, Comparator<? super String> keyComparator) {
         ROOT = new Root(requireNonNull(root, "Root cannot be null"));
         requireNonNull(keyComparator, "Key comparator cannot be null");
-        KEYS = root.keySet().stream().filter((key) -> !root.get(key).isJsonNull()).sorted(keyComparator).toList();
+        KEYS = root.entrySet().stream().map(Map.Entry::getKey)
+                .filter((key) -> !root.get(key).isJsonNull())
+                .sorted(keyComparator).toList();
         SIZE = KEYS.size();
     }
 
