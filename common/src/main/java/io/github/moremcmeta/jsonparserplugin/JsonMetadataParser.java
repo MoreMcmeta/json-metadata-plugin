@@ -20,6 +20,7 @@ package io.github.moremcmeta.jsonparserplugin;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.InvalidMetadataException;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.JsonMetadataView;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.ResourceRepository;
