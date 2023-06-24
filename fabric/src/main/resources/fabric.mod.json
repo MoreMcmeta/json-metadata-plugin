@@ -15,8 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "moremcmeta-client": [
-      "io.github.moremcmeta.jsonparserplugin.fabric.MoreMcmetaParserPluginFabric",
-      "io.github.moremcmeta.jsonparserplugin.fabric.McmetaParserPluginFabric"
+      "io.github.moremcmeta.jsonparserplugin.fabric.MoreMcmetaParserPluginFabric"
     ]
   },
   "depends": {
