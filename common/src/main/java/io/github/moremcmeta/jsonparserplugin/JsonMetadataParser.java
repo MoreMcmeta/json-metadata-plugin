@@ -25,15 +25,18 @@ import io.github.moremcmeta.moremcmeta.api.client.metadata.JsonMetadataView;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataParser;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.MetadataView;
 import io.github.moremcmeta.moremcmeta.api.client.metadata.ResourceRepository;
+import io.github.moremcmeta.moremcmeta.api.client.metadata.RootResourceName;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Reads JSON metadata from a .moremcmeta file.
@@ -45,12 +48,45 @@ public final class JsonMetadataParser implements MetadataParser {
     public Map<ResourceLocation, MetadataView> parse(ResourceLocation metadataLocation, InputStream metadataStream,
                                                      ResourceRepository resourceRepository)
             throws InvalidMetadataException {
-
         ResourceLocation textureLocation = new ResourceLocation(
                 metadataLocation.getNamespace(),
                 metadataLocation.getPath().substring(0, metadataLocation.getPath().lastIndexOf('.'))
         );
 
+        return ImmutableMap.of(textureLocation, parse(metadataStream));
+    }
+
+    @Override
+    public Map<? extends RootResourceName, ? extends Map<? extends RootResourceName, ? extends MetadataView>> parse(
+            ResourceRepository.Pack pack) {
+        RootResourceName metadataName = new RootResourceName("pack.png." + ModConstants.MOREMCMETA_EXTENSION);
+        ResourceLocation metadataLocation = pack.locateRootResource(metadataName);
+
+        Optional<InputStream> metadataOptional = pack.resource(metadataLocation);
+        if (metadataOptional.isPresent()) {
+            try {
+                return ImmutableMap.of(
+                        metadataName,
+                        ImmutableMap.of(
+                                new RootResourceName("pack.png"),
+                                parse(metadataOptional.get())
+                        )
+                );
+            } catch (InvalidMetadataException err) {
+                LogManager.getLogger().error("{} is invalid: {}", metadataName, err);
+            }
+        }
+
+        return ImmutableMap.of();
+    }
+
+    /**
+     * Parses a {@link InputStream} into a {@link MetadataView}.
+     * @param metadataStream    stream of bytes representing JSON metadata
+     * @return metadata view from the stream of bytes
+     * @throws InvalidMetadataException if the metadata is not valid JSON
+     */
+    private MetadataView parse(InputStream metadataStream) throws InvalidMetadataException {
         BufferedReader bufferedReader = null;
         MetadataView metadata;
 
@@ -70,7 +106,7 @@ public final class JsonMetadataParser implements MetadataParser {
             IOUtils.closeQuietly(bufferedReader);
         }
 
-        return ImmutableMap.of(textureLocation, metadata);
+        return metadata;
     }
 
     /**
