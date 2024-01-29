@@ -10,6 +10,7 @@ authors = "soir20"
 description = '''
 Default plugin for MoreMcmeta that reads JSON (.moremcmeta) metadata files.
 '''
+logoFile="moremcmeta-logo-gradient.png"
 
 [[dependencies.moremcmeta_json_parser_plugin]]
 modId = "moremcmeta"
