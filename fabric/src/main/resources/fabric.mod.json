@@ -12,6 +12,7 @@
     "sources": "https://github.com/MoreMcmeta/json-metadata-plugin"
   },
   "license": "LGPL-3.0",
+  "icon": "tricolor-zombie.png",
   "environment": "*",
   "entrypoints": {
     "moremcmeta-client": [
