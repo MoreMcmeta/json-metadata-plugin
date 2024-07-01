@@ -48,7 +48,7 @@ public final class JsonMetadataParser implements MetadataParser {
     public Map<ResourceLocation, MetadataView> parse(ResourceLocation metadataLocation, InputStream metadataStream,
                                                      ResourceRepository resourceRepository)
             throws InvalidMetadataException {
-        ResourceLocation textureLocation = new ResourceLocation(
+        ResourceLocation textureLocation = ResourceLocation.fromNamespaceAndPath(
                 metadataLocation.getNamespace(),
                 metadataLocation.getPath().substring(0, metadataLocation.getPath().lastIndexOf('.'))
         );
